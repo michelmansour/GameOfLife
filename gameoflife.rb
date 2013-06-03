@@ -135,7 +135,7 @@ OptionParser.new do |o|
   o.on('-n N', Integer, "Size of the world") { |n| size = n; live_cells = [] }
   o.on('-a X1,Y1,X2,Y2,...', Array, "Living cells as coordinate pairs") do |a|
     if not a.length.even?
-      print "Error: Must specify even number of living cells"
+      print "Error: Must specify living cells as pairs"
       exit
     end
     live_cells = a.collect { |k| k.to_i }.each_slice(2).to_a
