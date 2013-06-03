@@ -5,6 +5,15 @@
 #
 # To see it in action:
 #
+# From the command line:
+#
+#   gameoflife.rb -n N -a X1,Y1,X2,Y2,...
+#       -n N, the size of the board
+#       -a X1,Y1,... specifies which cells are alive
+#                    to start
+#
+# Or from within Ruby (or irb):
+#
 # 1. Create an instance of the GameOfLife class
 #    > gol = GameOfLife.new(5, [[1, 2], [2, 2], [3, 2]])
 #
@@ -39,6 +48,8 @@
 #    This will print out the state of the world after
 #    each generation, pausing a moment between iterations
 ##########################################################
+
+require 'optparse'
 
 class GameOfLife
 
@@ -115,3 +126,24 @@ class GameOfLife
   end
 
 end
+
+size = 5
+live_cells = [[1,2], [2,2], [3,2]]
+
+OptionParser.new do |o|
+  o.banner = "Usage: gameoflife.rb [options]"
+  o.on('-n N', Integer, "Size of the world") { |n| size = n; live_cells = [] }
+  o.on('-a X1,Y1,X2,Y2,...', Array, "Living cells as coordinate pairs") do |a|
+    if not a.length.even?
+      print "Error: Must specify even number of living cells"
+      exit
+    end
+    live_cells = a.collect { |k| k.to_i }.each_slice(2).to_a
+  end
+  o.on_tail("-h", "--help", "Show this message") do
+    puts o
+    exit
+  end
+end.parse!
+
+GameOfLife.new(size, live_cells).run
