@@ -62,10 +62,6 @@ class GameOfLife
     live_cells.each { |x, y| @cells[x][y] = :alive }
   end
 
-  def status(x, y)
-    @cells[x][y]
-  end
-
   def print_world(alive_str='*', dead_str='-')
     @cells.each do |row|
       row.each do |cell|
@@ -79,6 +75,27 @@ class GameOfLife
     end
   end
 
+  def run_generation
+    new_cells = Array.new(@size) { Array.new(@size, :dead) }
+    (0...@size).to_a.repeated_permutation(2) do |x, y| 
+      new_cells[x][y] = next_cell_state(x, y)
+    end
+    @cells = new_cells
+  end
+
+  def run
+    while true
+      print_world
+      print "\n=====================\n\n"
+      sleep(0.5)
+      run_generation
+    end
+  end
+
+  def status(x, y)
+    @cells[x][y]
+  end
+  
   def out_of_bounds?(x, y)
     x >= @size || x < 0 || y >= @size || y < 0
   end
@@ -105,22 +122,8 @@ class GameOfLife
     end
   end
 
-  def run_generation
-    new_cells = Array.new(@size) { Array.new(@size, :dead) }
-    (0...@size).to_a.repeated_permutation(2) do |x, y| 
-      new_cells[x][y] = next_cell_state(x, y)
-    end
-    @cells = new_cells
-  end
-
-  def run
-    while true
-      print_world
-      print "\n=====================\n\n"
-      sleep(0.5)
-      run_generation
-    end
-  end
+  private :status, :out_of_bounds?, :living_neighbors, :next_cell_state
+  
 end
 
 size = 5
