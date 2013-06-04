@@ -93,11 +93,7 @@ class GameOfLife
     end
   end
 
-  #def living_neighbors(x, y)
-  #  neighbors(x, y).count { |nx, ny| status(nx, ny) == :alive }
-  #end
-
-  def update_cell(x, y)
+  def next_cell_state(x, y)
     status = status(x, y)
     num_live_neighbors = living_neighbors(x, y)
     if status == :alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
@@ -112,7 +108,7 @@ class GameOfLife
   def run_generation
     new_cells = Array.new(@size) { Array.new(@size, :dead) }
     (0...@size).to_a.repeated_permutation(2) do |x, y| 
-      new_cells[x][y] = update_cell(x, y)
+      new_cells[x][y] = next_cell_state(x, y)
     end
     @cells = new_cells
   end
