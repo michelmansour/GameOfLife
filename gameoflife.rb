@@ -97,21 +97,21 @@ class GameOfLife
   end
 
   def update_cell(x, y)
-    alive = status(x, y) == ALIVE
+    is_alive = status(x, y) == ALIVE
     num_live_neighbors = living_neighbors(x, y)
-    if alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
+    if is_alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
       DEAD
-    elsif not alive and num_live_neighbors == 3
+    elsif not is_alive and num_live_neighbors == 3
       ALIVE
     else
-      @cells[x][y]
+      is_alive
     end
   end
 
   def run_generation
     new_cells = Array.new(@size) { Array.new(@size, DEAD) }
-    (0...@size).each do |x|
-      (0...@size).each { |y| new_cells[x][y] = update_cell(x, y) }
+    (0...@size).to_a.repeated_permutation(2) do |x, y| 
+      new_cells[x][y] = update_cell(x, y)
     end
     @cells = new_cells
   end
