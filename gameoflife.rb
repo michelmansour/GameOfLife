@@ -83,15 +83,19 @@ class GameOfLife
     x >= @size || x < 0 || y >= @size || y < 0
   end
 
-  def neighbors(x, y)
-    [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]].collect do |nx, ny|
-      [x + nx, y + ny]
-    end.delete_if { |nx, ny| out_of_bounds?(nx, ny) }
+  def living_neighbors(x, y)
+    [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]].inject(0) do |result, cell|
+      if out_of_bounds?(x + cell[0], y + cell[1]) || status(x + cell[0], y + cell[1]) == :dead
+        result
+      else
+        result + 1
+      end
+    end
   end
 
-  def living_neighbors(x, y)
-    neighbors(x, y).count { |nx, ny| status(nx, ny) == :alive }
-  end
+  #def living_neighbors(x, y)
+  #  neighbors(x, y).count { |nx, ny| status(nx, ny) == :alive }
+  #end
 
   def update_cell(x, y)
     status = status(x, y)
@@ -121,7 +125,6 @@ class GameOfLife
       run_generation
     end
   end
-
 end
 
 size = 5
