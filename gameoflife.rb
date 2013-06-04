@@ -53,16 +53,13 @@ require 'optparse'
 
 class GameOfLife
 
-  ALIVE = true
-  DEAD = false
-
   @size
   @cells
 
   def initialize(n, live_cells)
     @size = n
-    @cells = Array.new(@size) { Array.new(@size, DEAD) }
-    live_cells.each { |x, y| @cells[x][y] = ALIVE }
+    @cells = Array.new(@size) { Array.new(@size, :dead) }
+    live_cells.each { |x, y| @cells[x][y] = :alive }
   end
 
   def status(x, y)
@@ -72,7 +69,7 @@ class GameOfLife
   def print_world(alive_str='*', dead_str='-')
     @cells.each do |row|
       row.each do |cell|
-        if cell == ALIVE
+        if cell == :alive
           print alive_str
         else
           print dead_str
@@ -93,23 +90,23 @@ class GameOfLife
   end
 
   def living_neighbors(x, y)
-    neighbors(x, y).count { |nx, ny| status(nx, ny) == ALIVE }
+    neighbors(x, y).count { |nx, ny| status(nx, ny) == :alive }
   end
 
   def update_cell(x, y)
-    is_alive = status(x, y) == ALIVE
+    status = status(x, y)
     num_live_neighbors = living_neighbors(x, y)
-    if is_alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
-      DEAD
-    elsif not is_alive and num_live_neighbors == 3
-      ALIVE
+    if status == :alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
+      :dead
+    elsif status == :dead and num_live_neighbors == 3
+      :alive
     else
-      is_alive
+      status
     end
   end
 
   def run_generation
-    new_cells = Array.new(@size) { Array.new(@size, DEAD) }
+    new_cells = Array.new(@size) { Array.new(@size, :dead) }
     (0...@size).to_a.repeated_permutation(2) do |x, y| 
       new_cells[x][y] = update_cell(x, y)
     end
