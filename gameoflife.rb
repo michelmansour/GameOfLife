@@ -52,33 +52,38 @@
 require 'optparse'
 
 class GameOfLife
-
-  @size
+  
+  @width
+  @height
   @cells
-
-  def initialize(n, live_cells)
-    @size = n
-    @cells = Array.new(@size) { Array.new(@size, :dead) }
+  
+  def initialize(width, height, live_cells)
+    @width = width
+    @height = height
+    @cells = Array.new(@width) { Array.new(@height, :dead) }
     live_cells.each { |x, y| @cells[x][y] = :alive }
   end
-
+  
   def print_world(alive_str='*', dead_str='-')
-    @cells.each do |row|
-      row.each do |cell|
-        if cell == :alive
+    (0...@height).each do |y|
+      (0...@width).each do |x|
+        if status(x, y) == :alive
           print alive_str
         else
           print dead_str
         end
+        print " "
       end
       print "\n"
     end
   end
 
   def run_generation
-    new_cells = Array.new(@size) { Array.new(@size, :dead) }
-    (0...@size).to_a.repeated_permutation(2) do |x, y| 
-      new_cells[x][y] = next_cell_state(x, y)
+    new_cells = Array.new(@width) { Array.new(@height, :dead) }
+    (0...@width).each do |x|
+      (0...@height).each do |y|
+        new_cells[x][y] = next_cell_state(x, y)
+      end
     end
     @cells = new_cells
   end
@@ -97,7 +102,7 @@ class GameOfLife
   end
   
   def out_of_bounds?(x, y)
-    x >= @size || x < 0 || y >= @size || y < 0
+    x >= @width || x < 0 || y >= @height || y < 0
   end
 
   def living_neighbors(x, y)
@@ -126,12 +131,13 @@ class GameOfLife
   
 end
 
-size = 5
+width = 5
+height = 5
 live_cells = [[1,2], [2,2], [3,2]]
 
 OptionParser.new do |o|
   o.banner = "Usage: gameoflife.rb [options]"
-  o.on('-n N', Integer, "Size of the world") { |n| size = n; live_cells = [] }
+  o.on('-d N,M', Array, "Width and height of the world") { |d| width = d[0].to_i; height = d[1].to_i; live_cells = [] }
   o.on('-a X1,Y1,X2,Y2,...', Array, "Living cells as coordinate pairs") do |a|
     if not a.length.even?
       print "Error: Must specify living cells as pairs"
@@ -145,4 +151,4 @@ OptionParser.new do |o|
   end
 end.parse!
 
-GameOfLife.new(size, live_cells).run
+GameOfLife.new(width, height, live_cells).run
