@@ -7,8 +7,9 @@
 #
 # From the command line:
 #
-#   gameoflife.rb -n N -a X1,Y1,X2,Y2,...
-#       -n N, the size of the board
+#   gameoflife.rb -w N -h N -a X1,Y1,X2,Y2,...
+#       -w N, the width of the world
+#       -h N, the height of the world
 #       -a X1,Y1,... specifies which cells are alive
 #                    to start
 #
@@ -23,11 +24,11 @@
 #
 #   > gol.print_world
 #
-#     -----
-#     --*--
-#     --*--
-#     --*--
-#     -----
+#     - - - - -
+#     - - * - -
+#     - - * - -
+#     - - * - -
+#     - - - - -
 #
 #   Living cells are represented by *, dead ones by -.
 #   These are optional parameters to print_world.
@@ -36,11 +37,11 @@
 #    > gol.run_generation
 #    > gol.print_world
 #
-#    -----
-#    -----
-#    -***-
-#    -----
-#    -----
+#    - - - - -
+#    - - - - -
+#    - * * * -
+#    - - - - -
+#    - - - - -
 #
 # 3. Run the world:
 #    > gol.run
