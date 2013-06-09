@@ -1,55 +1,3 @@
-##########################################################
-# An implementation of Conway's Game of Life in Ruby
-#
-# (c) 2013 Michel Mansour
-#
-# To see it in action:
-#
-# From the command line:
-#
-#   gameoflife.rb -w N -h N -a X1,Y1,X2,Y2,...
-#       -w N, the width of the world
-#       -h N, the height of the world
-#       -a X1,Y1,... specifies which cells are alive
-#                    to start
-#
-# Or from within Ruby (or irb):
-#
-# 1. Create an instance of the GameOfLife class
-#    > gol = GameOfLife.new(5, [[1, 2], [2, 2], [3, 2]])
-#
-#   The first parameter is the size of the world
-#   (which is a square). The second parameter is an
-#   array of coordinates whose cells are alive.
-#
-#   > gol.print_world
-#
-#     - - - - -
-#     - - * - -
-#     - - * - -
-#     - - * - -
-#     - - - - -
-#
-#   Living cells are represented by *, dead ones by -.
-#   These are optional parameters to print_world.
-#
-# 2. Advance a single generation:
-#    > gol.run_generation
-#    > gol.print_world
-#
-#    - - - - -
-#    - - - - -
-#    - * * * -
-#    - - - - -
-#    - - - - -
-#
-# 3. Run the world:
-#    > gol.run
-#
-#    This will print out the state of the world after
-#    each generation, pausing a moment between iterations
-##########################################################
-
 require 'optparse'
 
 class GameOfLife
@@ -169,7 +117,7 @@ OptionParser.new do |o|
     end
     live_cells = a.collect { |k| k.to_i }.each_slice(2).to_a
   end
-  o.on('-b <standard|torus>', "Border rule: standard or torus") do |b|
+  o.on('-b <standard|torus>', "Border rule: standard (default) or torus") do |b|
     if b.downcase == "torus"
       border_rule = :torus
     end
