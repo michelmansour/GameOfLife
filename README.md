@@ -4,10 +4,9 @@ An implementation of Conway's Game of Life in Ruby
 ### From the command line:
 
 <pre>
-gameoflife.rb -w N -h N -a X1,Y1,X2,Y2,... -b <standard|torus>
-       -w N, the width of the world
-       -h N, the height of the world
-       -a X1,Y1,... specifies which cells are alive
+gameoflife.rb -d N,M -a X1,Y1,X2,Y2,... -b <standard|torus>
+       -d N,M Width and height of the world
+       -a X1,Y1,... Specifies which cells are alive
                     to start
        -b <standard|torus> Border rule: standard (default) or torus
      -h, --help Show the usage message
@@ -20,7 +19,7 @@ gameoflife.rb -w N -h N -a X1,Y1,X2,Y2,... -b <standard|torus>
 gol = GameOfLife.new(5, 5, [[1, 2], [2, 2], [3, 2]], :torus)
 ```
 
-The first parameter is the width of the world; the second is the height. The third parameter is an array of coordinates whose cells are initially alive. The last parameter is the rule to apply at the border for neighbor cells. :standard treats the border as dead cells, whiel :torus wraps around the board.
+The first parameter is the width of the world; the second is the height. The third parameter is an array of coordinates whose cells are initially alive. The last parameter is the rule to apply at the border for neighbor cells. :standard treats the border as dead cells, while :torus wraps around the board.
 
 ```ruby
 gol.print_world
