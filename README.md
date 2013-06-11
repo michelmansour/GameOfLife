@@ -4,7 +4,7 @@ An implementation of Conway's Game of Life in Ruby
 ### From the command line:
 
 <pre>
-gameoflife.rb -d N,M -a X1,Y1,X2,Y2,... -b <standard|torus>
+gol_app.rb -d N,M -a X1,Y1,X2,Y2,... -b <standard|torus>
        -d N,M Width and height of the world
        -a X1,Y1,... Specifies which cells are alive
                     to start

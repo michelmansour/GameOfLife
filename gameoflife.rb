@@ -98,7 +98,7 @@ class GameOfLife
     end
   end
 
- private :status, :out_of_bounds?, :border_neighbor, :living_neighbors, :next_cell_state
+#  private :status, :out_of_bounds?, :border_neighbor, :living_neighbors, :next_cell_state
   
 end
 
