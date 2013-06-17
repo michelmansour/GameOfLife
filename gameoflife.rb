@@ -73,20 +73,23 @@ class GameOfLife
     [new_x, new_y]
   end
 
-  def living_neighbors(x, y)
-    [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]].inject(0) do |result, delta|
-      neighbor = border_neighbor(x + delta[0], y + delta[1])
-      if out_of_bounds?(neighbor[0], neighbor[1]) || status(neighbor[0], neighbor[1]) == :dead
-        result
-      else
-        result + 1
-      end
+  def neighbors(x, y)
+    [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]].collect do | delta |
+      border_neighbor(delta[0] + x, delta[1] + y)
     end
+  end
+
+  def inbounds_neighbors(x, y)
+    neighbors(x, y).delete_if { | cell | out_of_bounds?(cell[0], cell[1]) }
+  end
+  
+  def living_neighbors(x, y)
+    inbounds_neighbors(x, y).delete_if { | cell | status(cell[0], cell[1]) == :dead }
   end
 
   def next_cell_state(x, y)
     status = status(x, y)
-    num_live_neighbors = living_neighbors(x, y)
+    num_live_neighbors = living_neighbors(x, y).count
     if status == :alive and (num_live_neighbors < 2 || num_live_neighbors > 3)
       :dead
     elsif status == :dead and num_live_neighbors == 3
@@ -95,9 +98,6 @@ class GameOfLife
       status
     end
   end
-
-#  private :status, :out_of_bounds?, :border_neighbor, :living_neighbors, :next_cell_state
-  
 end
 
 
